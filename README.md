@@ -22,6 +22,9 @@ Every Vue application starts by creating a new Vue instance with the Vue functio
 
 ```js
 var vm = new Vue({
-  // options
+  el: '#app',
+  data: 'Hello world!'
 });
 ```
+
+'vm' stands for ViewModel (inspired by **MVVM**: https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93viewmodel)
