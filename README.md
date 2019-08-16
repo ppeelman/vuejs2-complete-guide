@@ -23,12 +23,32 @@ npm install vue
 Every Vue application starts by creating a new Vue instance with the Vue function
 
 ```js
-var vm = new Vue({
-  el: '#app',
-  data: 'Hello world!'
+let vm = new Vue({
+  // options
 });
 ```
 
 'vm' stands for ViewModel (inspired by **MVVM**: https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93viewmodel)
 
 ## Directives
+
+```html
+<div id="app">
+  <input type="text" v-on:input="changeTitle" />
+  <p>{{ title }}</p>
+</div>
+```
+
+```js
+new Vue({
+  el: '#app',
+  data: {
+    title: 'Hello world'
+  },
+  methods: {
+    changeTitle: function(event) {
+      this.title = event.target.value;
+    }
+  }
+});
+```
