@@ -12,4 +12,16 @@ Using a CDN:
 <script src="https://cdn.jsdelivr.net/npm/vue"></script>
 ```
 
-Create a new Vue instance
+Using NPM (recommended)
+
+```
+npm install vue
+```
+
+Every Vue application starts by creating a new Vue instance with the Vue function
+
+```js
+var vm = new Vue({
+  // options
+});
+```
