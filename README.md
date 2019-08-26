@@ -1,3 +1,5 @@
+Documentation: https://vuejs.org/v2/guide/
+
 ## Why choose Vue.js?
 
 - Extremely lean and small (16kb minified and gzipped)
@@ -90,12 +92,20 @@ finishedLink: '<a href="http://www.google.com">Google</a>'
     ...
 ```
 
-```
+```html
 <p v-html="finishedLink"></p>
 ```
 
 Be careful! This can expose you to cross-scripting attacks!!
 If you know the source is clean, or you sanitized the HTML yourself, you can use this!
+
+You can enter valid JavaScript directly within the template:
+
+```html
+<button v-on:click="increase(2, $event)">Click me</button>
+<button v-on:click="counter++">Click me</button>
+<p>{{ counter * 2 > 10 ? 'Greater than 10' : 'Smaller than 10'}}</p>
+```
 
 ## Directives (bind element attributes)
 
@@ -152,3 +162,71 @@ It is a very common need to call event.preventDefault() or event.stopPropagation
 - **.passive**
 
 You can chain event modifiers!
+
+## Key modifiers
+
+When listening for keyboard events, we often need to check for specific keys. Vue allows adding key modifiers for v-on when listening for key events.
+
+```html
+<input type="text" v-on:keyup.enter="alertMe" />
+```
+
+Key modifiers can also be chained!
+
+```html
+<input type="text" v-on:keyup.enter.space="alertMe" />
+```
+
+## Two-Way data binding
+
+You can use the **v-model** directive to create two-way data bindings on form input, textarea, and select elements. It automatically picks the correct way to update the element based on the input type. Although a bit magical, v-model is essentially syntax sugar for updating data on user input events, plus special care for some edge cases.
+
+```html
+<input type="text" v-model="name" />
+<p>{{ name }}</p>
+```
+
+## Computed properties
+
+In-template expressions are very convenient, but they are meant for simple operations. Putting too much logic in your templates can make them bloated and hard to maintain.
+
+Every _function_ in the **computed** object of the Vue instance can be used just as a property within the **data** object (so without brackets).
+
+Difference with a function in the **methods**: for Computed properties, Vue analyzes the contents of the function in order to know what data properties the function is dependent on. A computed property will only re-evaluate when some of its reactive dependencies have changed. A method invocation will always run the function whenever a re-render happens (every time the DOM gets updated).
+
+This also means the following computed property will never update, because Date.now() is not a reactive dependency:
+
+```js
+computed: {
+  now: function () {
+    return Date.now()
+  }
+}
+```
+
+**Why do we need caching?** Imagine we have an expensive computed property A, which requires looping through a huge Array and doing a lot of computations. Then we may have other computed properties that in turn depend on A. Without caching, we would be executing A’s getter many more times than necessary! In cases where you do not want caching, use a method instead.
+
+Computed properties are by default **getter-only**, but you can also provide a **setter** when you need it:
+
+```
+
+```
+
+Computed properties always need to run **synchronously**.
+
+## Watch properties
+
+Execute code upon changes
+
+In **computed properties** we set up the property and then, as a function (within the computed object, we set up the logic how this property should be computed.
+
+In **watch properties**: as a key, I set up the property name I want to watch (has to match a data property) - then as a function, I specify the code I want to execute whenever the data property changes. Vue.js automatically passes the value of the upcoming change to this function. This allows to react to changes.
+
+**Don't overuse watch properties! Its is often a better idea to use a computed property rather than an imperative watch callback.**
+
+**Asynchronous actions**: this is most useful when you want to perform asynchronous or expensive operations in response to changing data.
+
+## Shorthands
+
+- **@click** is short for **v-on:click**
+- **:href** is short for **v-bind:href**
