@@ -128,6 +128,8 @@ In order to keep the first value and not rerender when the value subsequently ch
 
 ## Listening to events
 
+Documentation: https://vuejs.org/v2/guide/events.html#Listening-to-Events
+
 We can use the **v-on** directive to listen to DOM events and run some JavaScript when they’re triggered.
 
 ```html
@@ -147,6 +149,8 @@ methods: {
 
 ## Event modifier
 
+Documentation: https://vuejs.org/v2/guide/events.html#Event-Modifiers
+
 It is a very common need to call event.preventDefault() or event.stopPropagation() inside event handlers. Although we can do this easily inside methods, it would be better if the methods can be purely about data logic rather than having to deal with DOM event details.
 
 ```html
@@ -165,6 +169,8 @@ You can chain event modifiers!
 
 ## Key modifiers
 
+Documentation: https://vuejs.org/v2/guide/events.html#Key-Modifiers
+
 When listening for keyboard events, we often need to check for specific keys. Vue allows adding key modifiers for v-on when listening for key events.
 
 ```html
@@ -179,6 +185,8 @@ Key modifiers can also be chained!
 
 ## Two-Way data binding
 
+Documentation: https://vuejs.org/v2/guide/forms.html
+
 You can use the **v-model** directive to create two-way data bindings on form input, textarea, and select elements. It automatically picks the correct way to update the element based on the input type. Although a bit magical, v-model is essentially syntax sugar for updating data on user input events, plus special care for some edge cases.
 
 ```html
@@ -187,6 +195,8 @@ You can use the **v-model** directive to create two-way data bindings on form in
 ```
 
 ## Computed properties
+
+Documentation: https://vuejs.org/v2/guide/computed.html#Computed-Properties
 
 In-template expressions are very convenient, but they are meant for simple operations. Putting too much logic in your templates can make them bloated and hard to maintain.
 
@@ -214,7 +224,9 @@ Computed properties are by default **getter-only**, but you can also provide a *
 
 Computed properties always need to run **synchronously**.
 
-## Watch properties
+## Watch properties (watchers)
+
+Documentation: https://vuejs.org/v2/guide/computed.html#Watchers
 
 Execute code upon changes
 
@@ -230,3 +242,69 @@ In **watch properties**: as a key, I set up the property name I want to watch (h
 
 - **@click** is short for **v-on:click**
 - **:href** is short for **v-bind:href**
+
+## Dynamic styling with CSS Classes - class attribute
+
+Documentation: https://vuejs.org/v2/guide/class-and-style.html
+
+A common need for data binding is manipulating an element’s class list and its inline styles. Since they are both attributes, we can use v-bind to handle them: we only need to calculate a final string with our expressions. However, meddling with string concatenation is annoying and error-prone. For this reason, Vue provides special enhancements when v-bind is used with class and style. In addition to strings, the expressions can also evaluate to objects or arrays.
+
+```html
+<div id="app">
+  <div
+    class="demo"
+    @click="attachRed = !attachRed"
+    :class="{red: attachRed}"
+  ></div>
+  <div class="demo"></div>
+  <div class="demo"></div>
+</div>
+```
+
+```js
+new Vue({
+  el: '#app',
+  data: {
+    attachRed: false
+  }
+});
+```
+
+We can also bind to a **computed property** that returns an object.
+
+```html
+<div class="demo" @click="attachRed = !attachRed" :class="divClasses"></div>
+```
+
+```js
+computed: {
+    divClasses: function() {
+      return {
+        red: this.attachRed,
+        blue: !this.attachRed
+      };
+    }
+  }
+```
+
+We can pass an **array** to v-bind:class to apply a list of classes:
+
+```html
+<div v-bind:class="[activeClass, errorClass]"></div>
+```
+
+## Setting styles dynamically - style attribute
+
+Documentation: https://vuejs.org/v2/guide/class-and-style.html#Binding-Inline-Styles
+
+The object syntax for v-bind:style is pretty straightforward - it looks almost like CSS, except it’s a JavaScript object. You can use either camelCase or kebab-case (use quotes with kebab-case) for the CSS property names:
+
+```html
+<div v-bind:style="{ color: activeColor, fontSize: fontSize + 'px' }"></div>
+```
+
+It is often a good idea to bind to a style object directly so that the template is cleaner.
+
+For the style and class attribute, you can combine the object and name syntax within an array!
+
+## Conditional rendering
