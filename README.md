@@ -308,3 +308,67 @@ It is often a good idea to bind to a style object directly so that the template 
 For the style and class attribute, you can combine the object and name syntax within an array!
 
 ## Conditional rendering
+
+The directive v-if is used to conditionally render a block. The block will only be rendered if the directive’s expression returns a truthy value.
+
+```html
+<p v-if="show">Do you see me?</p>
+<p v-else>Do you also see me?</p>
+```
+
+V-if completely removes the element from the DOM, it doesn't hide them or make them transparent!
+
+New in 2.1.0+ is the **v-else-if** directive
+
+The HTML Content Template (<template>) element is a mechanism for holding HTML that is not to be rendered immediately when a page is loaded but may be instantiated subsequently during runtime using JavaScript. (https://developer.mozilla.org/en-US/docs/Web/HTML/Element/template)
+
+It's a handy way to apply the condition (if/else/else if) to multiple elements in 1 go.
+An alternative is to use a <div>, but this then gets rendered to the screen - which is something you might not want.
+
+### v-show
+
+v-show toggles the display CSS property of the element: **display: none**
+
+**v-if** is “real” conditional rendering because it ensures that event listeners and child components inside the conditional block are properly destroyed and re-created during toggles.
+
+**v-if** is also lazy: if the condition is false on initial render, it will not do anything - the conditional block won’t be rendered until the condition becomes true for the first time.
+
+In comparison, **v-show** is much simpler - the element is always rendered regardless of initial condition, with CSS-based toggling.
+
+Generally speaking, v-if has higher toggle costs while v-show has higher initial render costs. So prefer v-show if you need to toggle something very often, and prefer v-if if the condition is unlikely to change at runtime.
+
+Note that v-show doesn’t support the <template> element, nor does it work with v-else.
+
+## List rendering
+
+### Looping over an array
+
+We can use the v-for directive to render a list of items based on an array. The v-for directive requires a special syntax in the form of item in items, where items is the source data array and item is an alias for the array element being iterated on. v-for also supports an optional second argument for the index of the current item.
+
+```html
+<ul>
+  <li v-for="(ingredient, i) in ingredients">
+    {{ ingredient }} ({{ i }})
+  </li>
+</ul>
+```
+
+### Looping over an array of objects
+
+You can also provide a second argument for the property’s name (a.k.a. key):
+
+```html
+<ul>
+  <li v-for="person in persons">
+    <div v-for="(value, key, index) in person">
+      {{ key }} : {{ value }} ({{ index }})
+    </div>
+  </li>
+</ul>
+```
+
+### Looping through a list of numbers
+
+```html
+<span v-for="n in 10">{{ n }}</span>
+```
